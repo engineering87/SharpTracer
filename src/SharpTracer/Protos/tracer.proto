@@ -1,0 +1,34 @@
+// (c) 2020 Francesco Del Re <francesco.delre.87@gmail.com>
+// This code is licensed under MIT license (see LICENSE.txt for details)
+syntax = "proto3";
+
+option csharp_namespace = "SharpTracer";
+
+package tracer;
+
+// The Tracer service definition.
+service Tracer {
+	rpc Trace (TracerRequest) returns (TracerResponse);
+	rpc History(HistoryRequest) returns (HistoryResponse);
+}
+
+// The request message containing the trace informations.
+message TracerRequest {
+	string serviceSourceId = 1;
+	string serviceDestinationId = 2;
+	string payload = 3;
+	string timestamp = 4;
+}
+
+// The response message containing the trace result.
+message TracerResponse {
+	bool result = 1;
+}
+
+message HistoryRequest {
+	string sourceId = 1;
+} 
+
+message HistoryResponse {
+	repeated TracerRequest requests = 1;
+} 

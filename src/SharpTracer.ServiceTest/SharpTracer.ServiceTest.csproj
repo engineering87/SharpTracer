@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <Description>Experimental project for distributed tracing in microservices architectures based on gRPC services</Description>
+    <Company>Francesco Del Re</Company>
+    <PackageProjectUrl>https://github.com/engineering87/SharpTracer</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/engineering87/SharpTracer</RepositoryUrl>
+    <PackageLicenseFile></PackageLicenseFile>
+    <Copyright>MIT</Copyright>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Protos\tracer.proto" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="Protos\tracer.proto" GrpcServices="Client" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Grpc.AspNetCore" Version="2.34.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
+
+</Project>
