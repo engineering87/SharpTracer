@@ -5,6 +5,9 @@ SharpTracer is an experimental project for distributed tracing in microservices 
 Project is currently being tested and many developments are still work in progress.
 
 ### How it works
+
+![Alt text](/wiki/img/Architecture.jpg?raw=true)
+
 SharpTracer exposes two methods for the historicization of the traces and the orderly display of the history for each service.
 Each gRPC service present within the microservices architecture will have to inform the SharpTracer central service, which will take care of ordering the events for each gRPC service based on the local timestamp. The ordered history of each individual gRPC service will be displayed on the **HistoryAsync** method.
 Currently the historicization is only in memory.
