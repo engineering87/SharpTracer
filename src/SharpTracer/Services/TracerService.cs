@@ -20,7 +20,7 @@ namespace SharpTracer.Services
         }
 
         /// <summary>
-        /// Insert a new Trace.
+        /// Insert a new trace.
         /// </summary>
         /// <param name="request"></param>
         /// <param name="context"></param>
@@ -49,7 +49,7 @@ namespace SharpTracer.Services
 
             return Task.FromResult(new HistoryResponse
             {
-                Requests = { _historyService.History(request.SourceId) }
+                History = { _historyService.History(request.SourceId) }
             });
         }
     }

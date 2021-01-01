@@ -12,7 +12,7 @@ service Tracer {
 	rpc History(HistoryRequest) returns (HistoryResponse);
 }
 
-// The request message containing the trace informations.
+// The Tracer request message containing the trace informations.
 message TracerRequest {
 	string serviceSourceId = 1;
 	string serviceDestinationId = 2;
@@ -20,15 +20,17 @@ message TracerRequest {
 	string timestamp = 4;
 }
 
-// The response message containing the trace result.
+// The Tracer response message containing the trace result.
 message TracerResponse {
 	bool result = 1;
 }
 
+// The History request message containing the source of interest
 message HistoryRequest {
 	string sourceId = 1;
 } 
 
+// The History response message containing the history related to the source of interest
 message HistoryResponse {
-	repeated TracerRequest requests = 1;
-} 
+	repeated TracerRequest history = 1;
+}

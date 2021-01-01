@@ -32,5 +32,5 @@ message HistoryRequest {
 
 // The History response message containing the history related to the source of interest
 message HistoryResponse {
-	repeated TracerRequest requests = 1;
+	repeated TracerRequest history = 1;
 }
