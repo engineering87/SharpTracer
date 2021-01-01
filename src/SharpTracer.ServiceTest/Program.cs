@@ -42,7 +42,7 @@ namespace SharpTracer.ServiceTest
 
                     var reply = await client.TraceAsync(request);
 
-                    await Task.Delay(new Random().Next(500, 2000));
+                    await Task.Delay(new Random().Next(100, 200));
                 }
             }
             catch (Exception e)
@@ -70,12 +70,12 @@ namespace SharpTracer.ServiceTest
 
                     var reply = await client.HistoryAsync(request);
 
-                    foreach (var item in reply.Requests)
+                    foreach (var item in reply.History)
                     {
                         Console.WriteLine($"{item.ServiceSourceId} -> {item.ServiceDestinationId}");
                     }
 
-                    await Task.Delay(new Random().Next(15000, 20000));
+                    await Task.Delay(new Random().Next(1000, 2000));
                 }
             }
             catch (Exception e)

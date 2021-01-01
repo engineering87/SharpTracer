@@ -14,14 +14,15 @@ namespace SharpTracer.Services
         private readonly IQueueService _queueService;
         private readonly IHistoryService _historyService;
         private readonly ILogger<OrderingService> _logger;
-        private List<TracerRequest> _orderedRequests;
+
+        private readonly Dictionary<string, List<TracerRequest>> _orderedRequests;
 
         public OrderingService(ILogger<OrderingService> logger, IQueueService queueService, IHistoryService historyService)
         {
             _logger = logger;
             _queueService = queueService;
             _historyService = historyService;
-            _orderedRequests = new List<TracerRequest>();
+            _orderedRequests = new Dictionary<string, List<TracerRequest>>();
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -31,25 +32,28 @@ namespace SharpTracer.Services
                 var request = await _queueService.DequeueTraceRequestAsync(stoppingToken);
                 if (request != null)
                 {
-                    // add the request to the list
-                    _orderedRequests.Add(request);
-                    // order the current list
-                    OrderRequests();
+                    if (_orderedRequests.TryGetValue(request.ServiceSourceId, out var history))
+                    {
+                        // update and order the history of the node
+                        history.Add(request);
+
+                        history = history
+                            .OrderBy(x => x.ServiceSourceId)
+                            .ThenBy(x => x.Timestamp)
+                            .ToList();
+
+                        _orderedRequests[request.ServiceSourceId] = history;
+                    }
+                    else
+                    {
+                        // add the new node
+                        _orderedRequests.Add(request.ServiceSourceId, new List<TracerRequest> { request });
+                    }
+
                     // set the current history
-                    _historyService.SetHistory(_orderedRequests);
+                    _historyService.SetHistory(request.ServiceSourceId, _orderedRequests[request.ServiceSourceId]);
                 }
             }
-        }
-
-        /// <summary>
-        /// Order the TracerRequest by source node and local timestamp
-        /// </summary>
-        private void OrderRequests()
-        {
-            _orderedRequests = _orderedRequests
-                .OrderBy(x => x.ServiceSourceId)
-                .ThenBy(x => x.Timestamp)
-                .ToList();
         }
     }
 }
